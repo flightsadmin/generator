@@ -1,0 +1,29 @@
+{
+    "name": "flightsadmin/generator",
+    "description": "Scaffold Codeigniter4 Complete crud Including Model, Views and Controller",
+    "type": "library",
+    "keywords": [ "flightsadmin", "generator" ],
+    "homepage": "https://github.com/flightsadmin/generator",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "George",
+            "email": "george@flightsadmin.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "codeigniter4/framework": "^4.0"
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Flightsadmin\\Generator\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
