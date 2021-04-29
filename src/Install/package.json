@@ -1,7 +1,7 @@
 {
     "name": "ci4adminlte",
     "version": "1.0.0",
-    "description": "Simple RBAC AdminLte3 + CI 4",
+    "description": "Admin Dashboard made with AdminLte3 for Codeigniter 4",
     "private": true,
     "scripts": {
         "dev": "npm run development",
