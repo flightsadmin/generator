@@ -80,14 +80,11 @@ class Install extends BaseCommand
 	        $data_to_write.="\n"; 
 	        $data_to_write.= '$routes->get(\'logout\', \'Users::logout\');';
 	        $data_to_write.="\n"; 
-	        $data_to_write.= '$routes->post(\'delete-users\', \'Users::deleteUser\', [\'filter\' => \'auth\']);';
-	        $data_to_write.="\n"; 
-	        $data_to_write.= '$routes->post(\'register\', \'Users::register\', [\'filter\' => \'auth\']);';
+	        $data_to_write.= '$routes->match([\'get\',\'post\'],\'register\', \'Users::register\', [\'filter\' => \'noauth\']);';
 	        $data_to_write.="\n"; 
 	        $data_to_write.= '$routes->match([\'get\',\'post\'],\'profile\', \'Users::profile\', [\'filter\' => \'auth\']);';
-	        $data_to_write.="\n"; 
-	        $data_to_write.= '$routes->match([\'get\',\'post\'],\'user\', \'Users::allUsers\', [\'filter\' => \'auth\']);';
 	        $data_to_write.="\n";
+	        $data_to_write.= '$routes->get(\'dashboard\', \'Dashboard::index\', [\'filter\' => \'auth\']);';
 
 	        if (!strpos($string, $data_to_write)) {
 				file_put_contents($routeFile, $data_to_write, FILE_APPEND);

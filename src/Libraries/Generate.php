@@ -72,7 +72,6 @@ trait Generate
         return implode('/', $parts);
     }
 
-
     /**
      * @param $path
      * @param null $contents
@@ -223,8 +222,6 @@ trait Generate
 
     /**
      * Convert the type field sql to type input html
-     * @param $type_sql
-     * @return string
      */
     public function getTypeInput($type_sql){
         $type_html = "";
@@ -254,9 +251,6 @@ trait Generate
         return $type_html;
     }
 
-    /**
-     * @param $data
-     */
     public function createRoute($data){
         $route_file = APPPATH.'Config/Routes.php';
         $string = file_get_contents($route_file);
@@ -279,37 +273,6 @@ trait Generate
                 file_put_contents($route_file, $data_to_write, FILE_APPEND);
             }
     }
-
-
-    // {
-    //     CLI::write("Updating route file",'blue');
-    //         $routeFile = APPPATH.'Config/Routes.php';
-    //         $string = file_get_contents($routeFile);
-
-    //         $data_to_write ="\n //Custom Routes Added during installation \n";
-    //         $data_to_write.= '$routes->get(\'/\', \'Users::index\', [\'filter\' => \'noauth\']);';
-    //         $data_to_write.="\n"; 
-    //         $data_to_write.= '$routes->get(\'logout\', \'Users::logout\');';
-    //         $data_to_write.="\n"; 
-    //         $data_to_write.= '$routes->post(\'delete-users\', \'Users::deleteUser\', [\'filter\' => \'auth\']);';
-    //         $data_to_write.="\n"; 
-    //         $data_to_write.= '$routes->post(\'register\', \'Users::register\', [\'filter\' => \'auth\']);';
-    //         $data_to_write.="\n"; 
-    //         $data_to_write.= '$routes->match([\'get\',\'post\'],\'profile\', \'Users::profile\', [\'filter\' => \'auth\']);';
-    //         $data_to_write.="\n"; 
-    //         $data_to_write.= '$routes->match([\'get\',\'post\'],\'user\', \'Users::allUsers\', [\'filter\' => \'auth\']);';
-    //         $data_to_write.="\n";
-
-    //         if (!strpos($string, $data_to_write)) {
-    //             file_put_contents($routeFile, $data_to_write, FILE_APPEND);
-    //         }
-    //     CLI::write("Route file updated successfully",'green');
-    // }
-
-
-
-
-
 
     public function createDirectory($path, $perms = 0755)
     {

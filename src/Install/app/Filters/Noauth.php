@@ -1,5 +1,4 @@
-<?php 
-namespace App\Filters;
+<?php namespace App\Filters;
 
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -11,15 +10,12 @@ class Noauth implements FilterInterface
     {
         // Do something here
         if(session()->get('isLoggedIn')){
-          return redirect()->to('/student');
+          return redirect()->to('/dashboard');
         }
-
     }
-
     //--------------------------------------------------------------------
-
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
+        {
         // Do something here
-    }
+        }
 }

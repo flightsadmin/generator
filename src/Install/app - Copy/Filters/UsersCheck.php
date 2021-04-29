@@ -1,4 +1,5 @@
-<?php namespace App\Filters;
+<?php 
+namespace App\Filters;
 
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -19,11 +20,14 @@ class UsersCheck implements FilterInterface
             $segment = '/'.$uri->getSegment(2);
 
           return redirect()->to($segment);
+
         }
     }
+
     //--------------------------------------------------------------------
+
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-        {
+    {
         // Do something here
-        }
+    }
 }
