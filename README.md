@@ -24,7 +24,13 @@ You need to run ```npm run dev``` once generator completes installation.
       > Routes.php
       > Filters.php
       > Validation.php
-    > It will also publish assets to public folder.
+    > It will also publish assets to public folder and generate below new files
+      > Users.php in Controllers folder
+      > UsersModel.php in Models Folder
+      > 20121031100537_add_users.php in Database folder
+      > Auth.php, Noauth.php, UsersChecks.php in Filters folder
+      > UserRules.php in Validations folder 
+      > Will insert login, register and profile views in Views folder
 
 ## Start using it  
 Everything is ready to start generating repetitive code with Generator  
