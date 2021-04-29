@@ -1,17 +1,13 @@
 @= $this->extend('layouts/template'); !php
 @= $this->section('content'); !php
 <div class="container-fluid py-1">
-	<div class="row">
+	<div class="row justify-contents-center">
 		<div class="col-md-12">
 			<div class="card">
 					<div class="card-header">
-						<div style="display: flex; justify-content: space-between; align-items: center;">
-							<div class="float-left">
-								<h4>{! nameEntity !} Listing <h4>
-							</div>
-							<div>
-							<a href="@php echo site_url('/{! table !}-form') !php" class="btn btn-success mb-2">Add {! nameEntity !}</a>
-							</div>
+						<div class="d-flex justify-content-between align-items-center">
+							<h4>{! nameEntity !} Listing <h4>
+							<a href="@php echo site_url('/{! table !}-form') !php" class="btn btn-success"><i class="fa fa-plus"></i> Add {! nameEntity !}</a>
 						</div>
 					</div>
 					
@@ -35,8 +31,8 @@
 									<tr>
 {! fieldsTd !}
 										<td>
-											<a href="@php echo base_url('{! table !}-edit/'.$row['{! primaryKey !}']);!php" class="btn btn-primary btn-sm">Edit</a>
-											<a onclick="return confirm('Are you sure?')" href="@php echo base_url('{! table !}-delete/'.$row['{! primaryKey !}']);!php" class="btn btn-danger btn-sm">Delete</a>
+											<a href="@php echo base_url('{! table !}-edit/'.$row['{! primaryKey !}']);!php"><i class="fa fa-edit text-primary"></i></a>
+											<a onclick="return confirm('Are you sure?')" href="@php echo base_url('{! table !}-delete/'.$row['{! primaryKey !}']);!php"><i class="fa fa-trash text-danger pl-2"></i></a>
 										</td>
 									</tr>
 								@php endforeach; !php

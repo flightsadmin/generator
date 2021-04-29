@@ -9,11 +9,11 @@ class Publish extends BaseCommand
 {
     protected $group = 'Generators';
 
-    protected $name = 'generator:install';
+    protected $name = 'install';
 
     protected $description = 'Publish Selected Files and folders to Admin Panelin the current application.';
 
-    protected $usage = 'generator:install';
+    protected $usage = 'install';
 
     protected $arguments = [];
 
@@ -104,7 +104,7 @@ class Publish extends BaseCommand
 
     protected function publishController()
     {
-        $Controllers = ['Dashboard', 'Login', 'Register'];
+        $controllers = ['Dashboard', 'Login', 'Register'];
 
         foreach ($controllers as $controller) 
         {

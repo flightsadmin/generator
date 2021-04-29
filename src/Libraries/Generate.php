@@ -88,7 +88,7 @@ trait Generate
 
         if (! write_file($path, $contents))
         {
-            throw new \RuntimeException('Unable to create file'), $path));
+            throw new \RuntimeException('Unable to create file');
         }
 
     }
@@ -165,25 +165,25 @@ trait Generate
 
                 if ($this->getTypeInput($field->type)!='textarea'){
                     $inputForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="form-group">
+				"\t\t\t\t\t\t\t".'<div class="form-group col-md-6">
 							    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label>
 							    <input type="'.$this->getTypeInput($field->type).'" name="'.$field->name.'" class="form-control" id="'.$field->name.'" placeholder="'.ucwords(str_replace('_',' ',($field->name))).'">
 			                </div>'; 
 					$editForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="form-group">
+				"\t\t\t\t\t\t\t".'<div class="form-group col-md-6">
 							    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label>
 							    <input type="'.$this->getTypeInput($field->type).'" name="'.$field->name.'" class="form-control" id="'.$field->name.'" value="<?php echo $value[\''.$field->name.'\']; ?>">
 			                </div>';
                 }else{
                     $inputForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="form-group">
+				"\t\t\t\t\t\t\t".'<div class="form-group col-md-12">
 							    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label>
 							    <textarea name="'.$field->name.'" class="form-control" id="'.$field->name.'" placeholder="'.ucwords(str_replace('_',' ',($field->name))).'"></textarea>
 			                </div>';   
 					$editForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="form-group">
+				"\t\t\t\t\t\t\t".'<div class="form-group col-md-12">
 							    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label>
-							    <textarea name="'.$field->name.'" class="form-control" id="'.$field->name.'" value="<?php echo $value[\''.$field->name.'\']; ?>"></textarea>
+							    <textarea name="'.$field->name.'" class="form-control" id="'.$field->name.'"><?php echo $value[\''.$field->name.'\']; ?></textarea>
 			                </div>';
                 }
             }
@@ -258,9 +258,11 @@ trait Generate
      * @param $data
      */
     public function createRoute($data){
-        $route_file = file_get_contents(APPPATH.'Config/Routes.php');
+        $route_file = APPPATH.'Config/Routes.php';
+        $string = file_get_contents($route_file);
 
-        $data_to_write = $route_file."\n".'$routes->get(\''.$data['table'].'\',\''.$data['nameController'].'::index\');';
+        $data_to_write ="\n//". strtoupper($data['table']) ." Routes\n";
+        $data_to_write.= '$routes->get(\''.$data['table'].'\',\''.$data['nameController'].'::index\');';
         $data_to_write.="\n"; 
 		$data_to_write.= '$routes->get(\''.$data['table'].'-form\',\''.$data['nameController'].'::create\');'; 
 		$data_to_write.="\n"; 
@@ -273,8 +275,41 @@ trait Generate
 		$data_to_write.='$routes->get(\''.$data['table'].'-delete/(:num)\',\''.$data['nameController'].'::delete/$1\');';
         $data_to_write.="\n";
 
-        file_put_contents(APPPATH.'Config/Routes.php', $data_to_write);
+            if (!strpos($string, $data_to_write)) {
+                file_put_contents($route_file, $data_to_write, FILE_APPEND);
+            }
     }
+
+
+    // {
+    //     CLI::write("Updating route file",'blue');
+    //         $routeFile = APPPATH.'Config/Routes.php';
+    //         $string = file_get_contents($routeFile);
+
+    //         $data_to_write ="\n //Custom Routes Added during installation \n";
+    //         $data_to_write.= '$routes->get(\'/\', \'Users::index\', [\'filter\' => \'noauth\']);';
+    //         $data_to_write.="\n"; 
+    //         $data_to_write.= '$routes->get(\'logout\', \'Users::logout\');';
+    //         $data_to_write.="\n"; 
+    //         $data_to_write.= '$routes->post(\'delete-users\', \'Users::deleteUser\', [\'filter\' => \'auth\']);';
+    //         $data_to_write.="\n"; 
+    //         $data_to_write.= '$routes->post(\'register\', \'Users::register\', [\'filter\' => \'auth\']);';
+    //         $data_to_write.="\n"; 
+    //         $data_to_write.= '$routes->match([\'get\',\'post\'],\'profile\', \'Users::profile\', [\'filter\' => \'auth\']);';
+    //         $data_to_write.="\n"; 
+    //         $data_to_write.= '$routes->match([\'get\',\'post\'],\'user\', \'Users::allUsers\', [\'filter\' => \'auth\']);';
+    //         $data_to_write.="\n";
+
+    //         if (!strpos($string, $data_to_write)) {
+    //             file_put_contents($routeFile, $data_to_write, FILE_APPEND);
+    //         }
+    //     CLI::write("Route file updated successfully",'green');
+    // }
+
+
+
+
+
 
     public function createDirectory($path, $perms = 0755)
     {
