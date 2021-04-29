@@ -19,6 +19,7 @@ You need to run ```npm run dev``` once generator completes installation.
   ```
 
 2- Run ```php spark generator:install```
+
     > This will affect below files.
       > Routes.php
       > Filters.php
