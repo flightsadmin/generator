@@ -1,10 +1,45 @@
-@php namespace {namespace}\Models;
+@php
+namespace {namespace}\Models;
 
 use CodeIgniter\Model;
 
 class {! nameModel !} extends Model
 {
-    protected $table      = '{! table !}';
-    protected $primaryKey = '{! primaryKey !}';
-    protected $allowedFields = [{! allowedFields !}];
+	protected $DBGroup              = 'default';
+	protected $table                = '{! table !}';
+	protected $primaryKey           = '{! primaryKey !}';
+	protected $useAutoIncrement     = true;
+	protected $insertID             = 0;
+	protected $returnType           = 'array';
+	protected $useSoftDelete        = false;
+	protected $protectFields        = true;
+	protected $allowedFields        = [
+	{! allowedFields !}
+	];
+
+	// Dates
+	protected $useTimestamps        = false;
+	protected $dateFormat           = 'datetime';
+	protected $createdField         = 'created_at';
+	protected $updatedField         = 'updated_at';
+	protected $deletedField         = 'deleted_at';
+
+	// Validation
+	protected $validationRules      = [
+	{! fieldsVal !}
+	];
+	protected $validationMessages   = [];
+	protected $skipValidation       = false;
+	protected $cleanValidationRules = true;
+
+	// Callbacks
+	protected $allowCallbacks       = true;
+	protected $beforeInsert         = [];
+	protected $afterInsert          = [];
+	protected $beforeUpdate         = [];
+	protected $afterUpdate          = [];
+	protected $beforeFind           = [];
+	protected $afterFind            = [];
+	protected $beforeDelete         = [];
+	protected $afterDelete          = [];
 }

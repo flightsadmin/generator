@@ -1,72 +1,73 @@
 @php
 namespace {namespace}\Controllers;
-use App\Models\{! nameModel !};
+
 use CodeIgniter\Controller;
+use App\Models\{! nameModel !};
 
 class {! nameController !} extends Controller
 {
-    // show {! table !} list
-    public function index(){
-        ${! nameModel !} = new {! nameModel !}();
-        $data = [
-			'{! table !}' => ${! nameModel !}->orderBy('{! primaryKey !}', 'DESC')->paginate(10),
-			'pager' => ${! nameModel !}->pager
-			];
-        return view('{! table !}/index', $data);
+    protected ${! singularTable !};
+
+    /**
+     * {! nameController !} constructor.
+     */
+    public function __construct()
+    {
+        $this->{! singularTable !} = new {! nameModel !}();
     }
-	
-	// add {! table !} form
-    public function create(){
+
+    public function index()
+    {
+        ${! table !} = $this->{! singularTable !}->findAll();
+        return view('{! table !}/index', [
+            '{! table !}' => ${! table !}
+        ]);
+    }
+
+    public function add()
+    {
         return view('{! table !}/add');
     }
 
-    // insert data
-    public function store() {
-		helper(['form', 'url']);
-		
-        $val = $this->validate([
-{! fieldsVal !}
-        ]);
+    public function save()
+    {
+{! fieldsGet !}
 
-        ${! nameModel !} = new {! nameModel !}();
-        if (!$val)
-        {
-            echo view('{! table !}/add', [
-                'validation' => $this->validator
+        $data = [
+{! fieldsData !}
+        ];
+        if ($this->{! singularTable !}->save($data) == false) {
+            return view('{! table !}/add', [
+                'errors' => $this->{! singularTable !}->errors()
             ]);
+        } else {
+            return redirect('{! table !}');
         }
-        else
-        {
+    }
+
+    public function edit($id)
+    {
+        ${! singularTable !} = $this->{! singularTable !}->find($id);
+        return view('{! table !}/edit', [
+            'value' => ${! singularTable !}
+        ]);
+    }
+
+    public function update()
+    {
+            $id = $this->request->getPost('{! primaryKey !}');
+{! fieldsGet !}
+
         $data = [
-{! fieldsDates !}
+{! fieldsData !}
         ];
-        ${! nameModel !}->insert($data);
-        return $this->response->redirect(site_url('/{! table !}'));
-		}
+        $this->{! singularTable !}->update($id, $data);
+        return redirect('{! table !}');
     }
-	
-    // show single {! table !}
-    public function edit(${! primaryKey !} = null){
-        ${! nameModel !} = new {! nameModel !}();
-        $data['value'] = ${! nameModel !}->where('{! primaryKey !}', ${! primaryKey !})->first();
-        return view('{! table !}/edit', $data);
-    }
-	
-    // update {! table !} data
-    public function update(){
-        ${! nameModel !} = new {! nameModel !}();
-        $id = $this->request->getVar('{! primaryKey !}');
-        $data = [
-{! fieldsDates !}
-        ];
-        ${! nameModel !}->update(${! primaryKey !}, $data);
-        return $this->response->redirect(site_url('/{! table !}'));
-    }
-	
-    // delete {! table !}
-    public function delete($id = null){
-        ${! nameModel !} = new {! nameModel !}();
-        $data['{! table !}'] = ${! nameModel !}->where('id', ${! primaryKey !})->delete(${! primaryKey !});
-        return $this->response->redirect(site_url('/{! table !}'));
+
+    public function delete($id)
+    {
+        $this->{! singularTable !}->delete($id);
+        return redirect('{! table !}');
     }
 }

@@ -31,12 +31,12 @@ public function up()
                 'null'           => FALSE,
             ],
             'created_at'     => [
-                'type'           => 'DATETIME',
+                'type'           => 'TIMESTAMP',
                 'null'           => TRUE,
                 // 'default'        => 'current_timestamp()',
             ],
             'updated_at'     => [
-                'type'           => 'DATETIME',
+                'type'           => 'TIMESTAMP',
                 'null'           => TRUE,
                 // 'default'        => 'current_timestamp()',
             ]

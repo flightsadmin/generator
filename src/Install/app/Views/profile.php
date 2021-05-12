@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/template'); ?>
+<?= $this->extend('layouts/default'); ?>
 <?= $this->section('content'); ?>
 <div class="container">
   <div class="row justify-content-center">

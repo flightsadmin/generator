@@ -20,32 +20,15 @@ class CreateCrud extends BaseCommand
     	$table = array_shift($params);
     	$controllerName = array_shift($params);
     	$modelName = array_shift($params);
-
     	$namespace = array_shift($params);
 
         if (empty($table))
         {
-            $table = CLI::prompt('Table name');
+            $table = CLI::prompt('Enter Table name');
         }
-
-		if (empty($controller))
-        {
-            $controllerName = ucfirst($table) .'Controller';
-        }
-
-        if (empty($modelName))
-        {
-            $modelName = ucfirst($table) .'Model';
-        }
-		
-        if ($modelName==$controllerName){
-            $modelName = CLI::prompt('Please enter other name for Model');
-        }
-		
-        if (empty($namespace))
-        {
-            $namespace = "App";
-        }
+        $controllerName = ucfirst($table) .'Controller';
+        $modelName = ucfirst($table) .'Model';
+        $namespace = "App";
 
         if ($fields_db =  $this->getFields($table)){
             $this->data = [
@@ -53,11 +36,12 @@ class CreateCrud extends BaseCommand
                 'primaryKey'        => $this->getPrimaryKey($fields_db),
                 'namespace'         => $namespace,
                 'nameEntity'        => ucfirst($table),
+                'singularTable'     => singular($table),
                 'nameModel'         => ucfirst($modelName),
                 'nameController'    => ucfirst($controllerName),
-                'propertyList'      => $this->getDatesFromFields($fields_db)['propertyList'],
                 'allowedFields'     => $this->getDatesFromFields($fields_db)['allowedFields'],
-                'fieldsDates'       => $this->getDatesFromFields($fields_db)['fieldsDates'],
+                'fieldsGet'         => $this->getDatesFromFields($fields_db)['fieldsGet'],
+                'fieldsData'        => $this->getDatesFromFields($fields_db)['fieldsData'],
                 'fieldsVal'      	=> $this->getDatesFromFields($fields_db)['fieldsVal'],
                 'fieldsTh'          => $this->getDatesFromFields($fields_db)['fieldsTh'],
                 'fieldsTd'          => $this->getDatesFromFields($fields_db)['fieldsTd'],
@@ -67,11 +51,13 @@ class CreateCrud extends BaseCommand
             ];
 
             $this->createFileCrud($this->data);
-            
-            echo "Crud Generated successfully!";
+            CLI::write("Controller Generated successfully!", "cyan");
+            CLI::write("Model Generated successfully!", "cyan");
+            CLI::write("Views Generated successfully!", "cyan");
+            CLI::write("Crud Generated successfully!", "blue");
 
         }else{
-            echo "Table no found";
+            CLI::write("$table Table no found", "red");
         }
     }
 }

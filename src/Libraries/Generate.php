@@ -5,11 +5,7 @@ use Config\Services;
 
 trait Generate
 {
-    /**
-     * @param string $folder
-     * @param string $namespace
-     * @return string
-     */
+
     protected function getPathOutput($folder='', $namespace = 'App'){
         // Get namespace location form  PSR4 paths.
         $config = new Autoload();
@@ -20,10 +16,6 @@ trait Generate
         return rtrim($this->normalizePath($path), '/ ') .'/';
     }
 
-    /**
-     * @param $path
-     * @return string
-     */
     protected function normalizePath($path)
     {
         // Array to build a new path from the good parts
@@ -72,10 +64,6 @@ trait Generate
         return implode('/', $parts);
     }
 
-    /**
-     * @param $path
-     * @param null $contents
-     */
     protected function copyFile($path, $contents = null){
         helper('filesystem');
 
@@ -92,11 +80,6 @@ trait Generate
 
     }
 
-    /**
-     * @param $template_name
-     * @param array $data
-     * @return mixed|string
-     */
     public function render($template_name, $data = [])
     {
         if (empty($this->parser))
@@ -119,10 +102,6 @@ trait Generate
         return $output;
     }
 
-    /**
-     * @param $table
-     * @return array|bool|false
-     */
     protected function getFields($table){
         $this->db = \Config\Database::connect();
         if ($this->db->tableExists($table))
@@ -133,10 +112,6 @@ trait Generate
         }
     }
 
-    /**
-     * @param $fields
-     * @return mixed
-     */
     protected function getPrimaryKey($fields)
     {
         foreach ($fields as $field) {
@@ -146,42 +121,37 @@ trait Generate
         }
     }
 
-    /**
-     * @param $fields
-     * @return array
-     */
     protected function getDatesFromFields($fields){
         foreach ($fields as $field){
-            $properties      []  =  "\tprotected \${$field->name};";
-
             if ((!$field->primary_key && $field->name !== 'created_at' && $field->name !== 'updated_at' && $field->name !== 'deleted_at')){
-                $fields_th       []  =  "\t\t\t\t\t\t\t\t<th>".ucwords(str_replace('_',' ',($field->name)))."</th>";
+                $fields_th       []  =  "\t\t\t\t\t\t<th>".ucwords(str_replace('_',' ',($field->name)))."</th>";
                 $allowedFields   []  =  "'".$field->name."'";
-                $fields_data     []  =  "\t\t\t'" .$field->name.'\'=>$this->request->getVar(\''.$field->name.'\')';  
-				$fields_val     []  =  "\t\t\t\t'" .$field->name.'\'=>\'required\'';
-                $fields_td       []  =  "\t\t\t\t\t\t\t\t\t\t".'<td><?php echo $row[\''.$field->name.'\']; ?></td>';
+                $fields_get      []  =  "\t\t\t$" .$field->name.' = $this->request->getPost(\''.$field->name.'\');';
+                $fields_data     []  =  "\t\t\t'" .$field->name.'\' => $'.$field->name.'';  
+				$fields_val      []  =  "\t'".$field->name.'\'=>\'required\'';
+                $fields_td       []  =  "\t\t\t\t\t\t\t\t".'<td><?php echo $row[\''.$field->name.'\']; ?></td>';
                 $valueInput      []  =  '$(\'[name="'.$field->name.'"]\').val((data.'.$field->name.'));';
 
                 if ($this->getTypeInput($field->type)!='textarea'){
                     $inputForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="form-group col-md-6">
+				"\t\t\t\t\t\t\t".'<div class="col-md-6">
 							    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label>
 							    <input type="'.$this->getTypeInput($field->type).'" name="'.$field->name.'" class="form-control" id="'.$field->name.'" placeholder="'.ucwords(str_replace('_',' ',($field->name))).'">
 			                </div>'; 
 					$editForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="form-group col-md-6">
-							    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label>
+				"\t\t\t\t\t\t\t".'<div class="col-md-6">
+							    <label class="form-label" for="'.$field->name.'">'.ucwords(str_replace('_',' ',($field->name))).'</label>
 							    <input type="'.$this->getTypeInput($field->type).'" name="'.$field->name.'" class="form-control" id="'.$field->name.'" value="<?php echo $value[\''.$field->name.'\']; ?>">
 			                </div>';
                 }else{
                     $inputForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="form-group col-md-12">
-							    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label>
+				"\t\t\t\t\t\t\t".'<div class="col-md-12">
+							    <label class="form-label" for="'.$field->name.'">'.ucwords(str_replace('_',' ',($field->name))).'</label>
 							    <textarea name="'.$field->name.'" class="form-control" id="'.$field->name.'" placeholder="'.ucwords(str_replace('_',' ',($field->name))).'"></textarea>
 			                </div>';   
 					$editForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="form-group col-md-12">
-							    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label>
+				"\t\t\t\t\t\t\t".'<div class="col-md-12">
+							    <label class="form-label" for="'.$field->name.'">'.ucwords(str_replace('_',' ',($field->name))).'</label>
 							    <textarea name="'.$field->name.'" class="form-control" id="'.$field->name.'"><?php echo $value[\''.$field->name.'\']; ?></textarea>
 			                </div>';
                 }
@@ -191,9 +161,9 @@ trait Generate
         return array(
             'fieldsTh'      => implode("\n",$fields_th),
             'fieldsTd'      => implode("\n",$fields_td),
-            'propertyList'  => implode("\n",$properties),
             'allowedFields' => implode(',', $allowedFields),
-            'fieldsDates'   => implode(",\n", $fields_data),
+            'fieldsGet'     => implode("\n", $fields_get),
+            'fieldsData'    => implode(",\n", $fields_data),
             'fieldsVal'     => implode(",\n", $fields_val),
             'inputForm'     => implode("\n", $inputForm),
             'editForm'      => implode("\n", $editForm),
@@ -201,15 +171,12 @@ trait Generate
         );
     }
 
-    /**
-     * @param $data
-     */
     protected function createFileCrud($data){
 		$pathModel          = $this->getPathOutput('Models',$data['namespace']).$data['nameModel'].'.php';
 		$pathController     = $this->getPathOutput('Controllers',$data['namespace']).$data['nameController'].'.php';
 		$pathViewadd        = $this->getPathOutput('Views',$data['namespace']).$data['table'].'/add.php';
 		$pathViewedit       = $this->getPathOutput('Views',$data['namespace']).$data['table'].'/edit.php';
-		$pathViewindex       = $this->getPathOutput('Views',$data['namespace']).$data['table'].'/index.php';
+		$pathViewindex      = $this->getPathOutput('Views',$data['namespace']).$data['table'].'/index.php';
 
 		$this->copyFile($pathModel,$this->render('Model',$data));
 		$this->copyFile($pathController,$this->render('Controller',$data));
@@ -236,10 +203,10 @@ trait Generate
                 $type_html = 'date';
                 break; 
 			case 'datetime':
-                $type_html = 'date';
+                $type_html = 'datetime';
                 break;
 			case 'timestamp':
-                $type_html = 'date';
+                $type_html = 'datetime';
                 break;	
 			case 'time':
                 $type_html = 'time';
@@ -255,18 +222,18 @@ trait Generate
         $route_file = APPPATH.'Config/Routes.php';
         $string = file_get_contents($route_file);
 
-        $data_to_write ="\n//". strtoupper($data['table']) ." Routes\n";
+        $data_to_write ="\n//". humanize($data['table']) ." Routes\n";
         $data_to_write.= '$routes->get(\''.$data['table'].'\',\''.$data['nameController'].'::index\');';
         $data_to_write.="\n"; 
-		$data_to_write.= '$routes->get(\''.$data['table'].'-form\',\''.$data['nameController'].'::create\');'; 
+		$data_to_write.= '$routes->get(\''.$data['table'].'/add\',\''.$data['nameController'].'::add\');'; 
 		$data_to_write.="\n"; 
-		$data_to_write.= '$routes->post(\''.$data['table'].'-submit\',\''.$data['nameController'].'::store\');';
+		$data_to_write.= '$routes->post(\''.$data['table'].'/save\',\''.$data['nameController'].'::save\');';
         $data_to_write.="\n";
-        $data_to_write.='$routes->get(\''.$data['table'].'-edit/(:num)\',\''.$data['nameController'].'::edit/$1\');';
+        $data_to_write.='$routes->get(\''.$data['table'].'/edit/(:any)\',\''.$data['nameController'].'::edit/$1\');';
         $data_to_write.="\n"; 
-        $data_to_write.='$routes->post(\''.$data['table'].'-update\',\''.$data['nameController'].'::update\');';
+        $data_to_write.='$routes->post(\''.$data['table'].'/update\',\''.$data['nameController'].'::update\');';
         $data_to_write.="\n"; 
-		$data_to_write.='$routes->get(\''.$data['table'].'-delete/(:num)\',\''.$data['nameController'].'::delete/$1\');';
+		$data_to_write.='$routes->get(\''.$data['table'].'/delete/(:any)\',\''.$data['nameController'].'::delete/$1\');';
         $data_to_write.="\n";
 
             if (!strpos($string, $data_to_write)) {
@@ -283,7 +250,7 @@ trait Generate
 
         if (! mkdir($path, $perms, true))
         {
-            throw new \RuntimeException(sprintf(lang('FastCode.errorCreatingDir'), $path));
+            throw new \RuntimeException(sprintf('Error creating directory', $path));
         }
         return $this;
     }
