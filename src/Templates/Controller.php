@@ -4,70 +4,68 @@ namespace {namespace}\Controllers;
 use CodeIgniter\Controller;
 use App\Models\{! nameModel !};
 
-class {! nameController !} extends Controller
+class {! nameController !} extends BaseController
 {
-    protected ${! singularTable !};
-
-    /**
-     * {! nameController !} constructor.
-     */
-    public function __construct()
-    {
-        $this->{! singularTable !} = new {! nameModel !}();
-    }
-
     public function index()
     {
-        ${! table !} = $this->{! singularTable !}->findAll();
-        return view('{! table !}/index', [
-            '{! table !}' => ${! table !}
-        ]);
+        // Call view "{! singularCaps !} view"
+        echo view('{! table !}/index');
     }
 
-    public function add()
+    // Get Single {! singularCaps !}
+    public function single{! singularCaps !}(${! primaryKey !} = null)
     {
-        return view('{! table !}/add');
+        $model = new {! nameModel !}();
+        $data = $model->find(${! primaryKey !});
+        return json_encode($data);
+    }    
+
+    // Get All {! singularCaps !}s
+    public function get{! singularCaps !}()
+    {
+        $model = new {! nameModel !}();
+        $data = $model->findAll();
+        return json_encode($data);
     }
 
-    public function save()
-    {
-{! fieldsGet !}
-
-        $data = [
+    // Create {! singularCaps !}
+    public function create(){
+        $method = $this->request->getMethod(true);
+        // Insert data to database if method "POST"
+        if($method == 'POST'){
+            $model = new {! nameModel !}();
+            $json = $this->request->getJSON();
+            $data = [
 {! fieldsData !}
-        ];
-        if ($this->{! singularTable !}->save($data) == false) {
-            return view('{! table !}/add', [
-                'errors' => $this->{! singularTable !}->errors()
-            ]);
-        } else {
-            return redirect('{! table !}');
-        }
+            ];
+            $model->insert($data);
+        }else{
+            // Call View "Add {! singularCaps !}" if method "GET"
+            echo view('{! table !}/add');
+        } 
     }
 
-    public function edit($id)
-    {
-        ${! singularTable !} = $this->{! singularTable !}->find($id);
-        return view('{! table !}/edit', [
-            'value' => ${! singularTable !}
-        ]);
-    }
-
-    public function update()
-    {
-            $id = $this->request->getPost('{! primaryKey !}');
-{! fieldsGet !}
-
-        $data = [
+    // Update {! singularCaps !}
+    public function update(${! primaryKey !} = null){
+        $method = $this->request->getMethod(true);
+        $model = new {! nameModel !}();
+        // Insert data to database if method "PUT"
+        if($method == 'PUT'){
+            $json = $this->request->getJSON();
+            $data = [
 {! fieldsData !}
-        ];
-        $this->{! singularTable !}->update($id, $data);
-        return redirect('{! table !}');
+            ];
+            $model->update(${! primaryKey !}, $data);
+        }else{
+            // Call View "Edit {! singularCaps !}" if method "GET"
+            $data['data'] = $model->find(${! primaryKey !});
+            echo view('{! table !}/edit', $data);
+        } 
     }
 
-    public function delete($id)
-    {
-        $this->{! singularTable !}->delete($id);
-        return redirect('{! table !}');
+    // Delete {! singularCaps !}
+    public function delete(${! primaryKey !} = null){
+        $model = new {! nameModel !}();
+        $model->delete(${! primaryKey !});
     }
 }

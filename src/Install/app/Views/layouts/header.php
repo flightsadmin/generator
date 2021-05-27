@@ -1,26 +1,32 @@
-<header class="navbar navbar-light bg-light sticky-top flex-md-nowrap p-0">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Flight Admin</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-    <?php
-      $uri = service('uri');
-    ?>
-  <?php if (session()->get('isLoggedIn')): ?>
-    <ul class="navbar-nav text-nowrap">
-      <li class="nav-item <?= ($uri->getSegment(1) == 'profile' ? 'active' : null) ?>">
-        <a class="nav-link" href="/profile"><i class="fa fa-user"></i> Profile</a>
-      </li>
-    </ul>
-  <?php else: ?>
-  <ul class="navbar-nav mr-auto ">
-    <li class="nav-item <?= ($uri->getSegment(1) == '' ? 'active' : null) ?>">
-      <a class="nav-link" href="/">Login</a>
-    </li>
-    <li class="nav-item <?= ($uri->getSegment(1) == 'register' ? 'active' : null) ?>">
-      <a class="nav-link" href="/register">Register</a>
-    </li>
-  </ul>
-  <?php endif; ?>
-</header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="offcanvasExample">
+      <span class="navbar-toggler-icon" data-bs-target="#sidebar"></span>
+    </button>
+    <a class="navbar-brand me-auto ms-lg-0 ms-3 text-uppercase fw-bold" href="#">Flight Admin</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavBar" aria-controls="topNavBar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="topNavBar">
+      <form class="d-flex ms-auto my-3 my-lg-0">
+        <div class="input-group">
+          <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
+          <button class="btn btn-primary" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-fill"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#"><i class="bi bi-person-fill"></i> Profile</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-lock-fill"></i> Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

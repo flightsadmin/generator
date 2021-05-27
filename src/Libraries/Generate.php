@@ -123,64 +123,66 @@ trait Generate
 
     protected function getDatesFromFields($fields){
         foreach ($fields as $field){
-            if ((!$field->primary_key && $field->name !== 'created_at' && $field->name !== 'updated_at' && $field->name !== 'deleted_at')){
-                $fields_th       []  =  "\t\t\t\t\t\t<th>".ucwords(str_replace('_',' ',($field->name)))."</th>";
-                $allowedFields   []  =  "'".$field->name."'";
-                $fields_get      []  =  "\t\t\t$" .$field->name.' = $this->request->getPost(\''.$field->name.'\');';
-                $fields_data     []  =  "\t\t\t'" .$field->name.'\' => $'.$field->name.'';  
-				$fields_val      []  =  "\t'".$field->name.'\'=>\'required\'';
-                $fields_td       []  =  "\t\t\t\t\t\t\t\t".'<td><?php echo $row[\''.$field->name.'\']; ?></td>';
-                $valueInput      []  =  '$(\'[name="'.$field->name.'"]\').val((data.'.$field->name.'));';
+        if ((!$field->primary_key && $field->name !== 'created_at' && $field->name !== 'updated_at' && $field->name !== 'deleted_at')){
+            $fields_th       []  =  "\t\t\t\t\t\t<th>".ucwords(str_replace('_',' ',($field->name)))."</th>";
+            $fields_td       []  =  "\t\t\t\t".'rowData += `<td>${'.$field->name.'}</td>`;';
+            $allowedFields   []  =  "'".$field->name."'";
+            $fields_add      []  =  "\t\t\tconst " .$field->name.' = addform.'.$field->name.'.value;';
+            $fields_edit     []  =  "\t\t\tconst " .$field->name.' = editform.'.$field->name.'.value;';
+            $fields_data     []  =  "\t\t\t\t'" .$field->name.'\' => $json->'.$field->name.'';  
+			$fields_validate []  =   $field->name.' === ""';
+            $fields_value    []  =   $field->name;
 
-                if ($this->getTypeInput($field->type)!='textarea'){
-                    $inputForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="col-md-6">
-							    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label>
-							    <input type="'.$this->getTypeInput($field->type).'" name="'.$field->name.'" class="form-control" id="'.$field->name.'" placeholder="'.ucwords(str_replace('_',' ',($field->name))).'">
-			                </div>'; 
-					$editForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="col-md-6">
-							    <label class="form-label" for="'.$field->name.'">'.ucwords(str_replace('_',' ',($field->name))).'</label>
-							    <input type="'.$this->getTypeInput($field->type).'" name="'.$field->name.'" class="form-control" id="'.$field->name.'" value="<?php echo $value[\''.$field->name.'\']; ?>">
-			                </div>';
-                }else{
-                    $inputForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="col-md-12">
-							    <label class="form-label" for="'.$field->name.'">'.ucwords(str_replace('_',' ',($field->name))).'</label>
-							    <textarea name="'.$field->name.'" class="form-control" id="'.$field->name.'" placeholder="'.ucwords(str_replace('_',' ',($field->name))).'"></textarea>
-			                </div>';   
-					$editForm   []  =
-				"\t\t\t\t\t\t\t".'<div class="col-md-12">
-							    <label class="form-label" for="'.$field->name.'">'.ucwords(str_replace('_',' ',($field->name))).'</label>
-							    <textarea name="'.$field->name.'" class="form-control" id="'.$field->name.'"><?php echo $value[\''.$field->name.'\']; ?></textarea>
-			                </div>';
-                }
+            if ($this->getTypeInput($field->type)!='textarea'){
+                $inputForm   []  =
+			"\t\t\t".'<div class="col-md-6">
+			    <label>'.ucwords(str_replace('_',' ',($field->name))).'</label> <span class="text-danger" id="' .$field->name. '"></span>
+			    <input type="'.$this->getTypeInput($field->type).'" id="'.$field->name.'" class="form-control input-'.$field->name.'" placeholder="'.ucwords(str_replace('_',' ',($field->name))).'">
+            </div>'; 
+				$editForm   []  =
+			"\t\t\t\t\t\t\t".'<div class="col-md-6">
+						    <label class="form-label" for="'.$field->name.'">'.ucwords(str_replace('_',' ',($field->name))).'</label> <span class="text-danger" id="' .$field->name. '"></span>
+						    <input type="'.$this->getTypeInput($field->type).'" id="'.$field->name.'" class="form-control '.$field->name.'" value="<?= esc($data[\''.$field->name.'\']); ?>">
+		                </div>';
+            }else{
+                $inputForm   []  =
+			"\t\t\t".'<div class="col-md-12">
+			    <label class="form-label" for="'.$field->name.'">'.ucwords(str_replace('_',' ',($field->name))).'</label> <span class="text-danger" id="' .$field->name. '"></span>
+			    <textarea name="'.$field->name.'" class="form-control" id="'.$field->name.'" placeholder="'.ucwords(str_replace('_',' ',($field->name))).'"></textarea>
+            </div>';   
+				$editForm   []  =
+			"\t\t\t\t\t\t\t".'<div class="col-md-12">
+						    <label class="form-label" for="'.$field->name.'">'.ucwords(str_replace('_',' ',($field->name))).'</label> <span class="text-danger" id="' .$field->name. '"></span>
+						    <textarea name="'.$field->name.'" class="form-control" id="'.$field->name.'"><?php echo $value[\''.$field->name.'\']; ?></textarea>
+		                </div>';
             }
         }
+    }
 
         return array(
             'fieldsTh'      => implode("\n",$fields_th),
             'fieldsTd'      => implode("\n",$fields_td),
             'allowedFields' => implode(',', $allowedFields),
-            'fieldsGet'     => implode("\n", $fields_get),
+            'fieldsAdd'     => implode("\n", $fields_add),
+            'fieldsEdit'    => implode("\n", $fields_edit),
             'fieldsData'    => implode(",\n", $fields_data),
-            'fieldsVal'     => implode(",\n", $fields_val),
+            'fieldsValidate'=> implode(" || ", $fields_validate),
+            'fieldsValue'   => implode(", ", $fields_value),
             'inputForm'     => implode("\n", $inputForm),
             'editForm'      => implode("\n", $editForm),
-            'valueInput'    => implode("\n", $valueInput),
         );
     }
 
     protected function createFileCrud($data){
 		$pathModel          = $this->getPathOutput('Models',$data['namespace']).$data['nameModel'].'.php';
 		$pathController     = $this->getPathOutput('Controllers',$data['namespace']).$data['nameController'].'.php';
-		$pathViewadd        = $this->getPathOutput('Views',$data['namespace']).$data['table'].'/add.php';
+		// $pathViewadd        = $this->getPathOutput('Views',$data['namespace']).$data['table'].'/add.php';
 		$pathViewedit       = $this->getPathOutput('Views',$data['namespace']).$data['table'].'/edit.php';
 		$pathViewindex      = $this->getPathOutput('Views',$data['namespace']).$data['table'].'/index.php';
 
 		$this->copyFile($pathModel,$this->render('Model',$data));
 		$this->copyFile($pathController,$this->render('Controller',$data));
-		$this->copyFile($pathViewadd,$this->render('views/add',$data));
+		// $this->copyFile($pathViewadd,$this->render('views/add',$data));
 		$this->copyFile($pathViewedit,$this->render('views/edit',$data));
 		$this->copyFile($pathViewindex,$this->render('views/index',$data));
 
@@ -224,17 +226,6 @@ trait Generate
 
         $data_to_write ="\n//". humanize($data['table']) ." Routes\n";
         $data_to_write.= '$routes->get(\''.$data['table'].'\',\''.$data['nameController'].'::index\');';
-        $data_to_write.="\n"; 
-		$data_to_write.= '$routes->get(\''.$data['table'].'/add\',\''.$data['nameController'].'::add\');'; 
-		$data_to_write.="\n"; 
-		$data_to_write.= '$routes->post(\''.$data['table'].'/save\',\''.$data['nameController'].'::save\');';
-        $data_to_write.="\n";
-        $data_to_write.='$routes->get(\''.$data['table'].'/edit/(:any)\',\''.$data['nameController'].'::edit/$1\');';
-        $data_to_write.="\n"; 
-        $data_to_write.='$routes->post(\''.$data['table'].'/update\',\''.$data['nameController'].'::update\');';
-        $data_to_write.="\n"; 
-		$data_to_write.='$routes->get(\''.$data['table'].'/delete/(:any)\',\''.$data['nameController'].'::delete/$1\');';
-        $data_to_write.="\n";
 
             if (!strpos($string, $data_to_write)) {
                 file_put_contents($route_file, $data_to_write, FILE_APPEND);
