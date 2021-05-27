@@ -16,17 +16,15 @@
     <!-- Header -->
      <?= $this->include('layouts/header') ?>
 
+    <!-- Sidebar -->
+    <?= $this->include('layouts/sidebar') ?>
 
-<div class="container-fluid">
-  <div class="row">
-        <!-- Sidebar -->
-        <?= $this->include('layouts/sidebar') ?>
-
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <!-- Main content -->
+    <main class="mt-5 pt-3">
         <?= $this->renderSection('content') ?>
     </main>
-  </div>
-</div>
+
+  <?= $this->renderSection('scripts') ?>
   <!-- Bootstrap core JavaScript -->
   <script src="<?php echo base_url('js/app.js');?>"></script>
 </body>

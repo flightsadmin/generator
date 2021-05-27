@@ -13,41 +13,38 @@ class CreateCrud extends BaseCommand
     protected $description = 'Generate complete CRUD based on database table, (External Library)';
     protected $data        = [];
 
-
     public function run(array $params)
     {
 		helper('inflector');
-    	$table = array_shift($params);
-    	$controllerName = array_shift($params);
-    	$modelName = array_shift($params);
-    	$namespace = array_shift($params);
+    	$table             = array_shift($params);
 
         if (empty($table))
         {
-            $table = CLI::prompt('Enter Table name');
+            $table = CLI::prompt('Enter Database Table name');
         }
-        $controllerName = ucfirst($table) .'Controller';
-        $modelName = ucfirst($table) .'Model';
-        $namespace = "App";
+        $controllerName = singular(ucfirst($table));
+        $modelName      = singular(ucfirst($table)) .'Model';
+        $namespace      = "App";
 
-        if ($fields_db =  $this->getFields($table)){
+        if ($fields_db  =  $this->getFields($table)){
             $this->data = [
-                'table'             => $table,
-                'primaryKey'        => $this->getPrimaryKey($fields_db),
-                'namespace'         => $namespace,
-                'nameEntity'        => ucfirst($table),
-                'singularTable'     => singular($table),
-                'nameModel'         => ucfirst($modelName),
-                'nameController'    => ucfirst($controllerName),
-                'allowedFields'     => $this->getDatesFromFields($fields_db)['allowedFields'],
-                'fieldsGet'         => $this->getDatesFromFields($fields_db)['fieldsGet'],
-                'fieldsData'        => $this->getDatesFromFields($fields_db)['fieldsData'],
-                'fieldsVal'      	=> $this->getDatesFromFields($fields_db)['fieldsVal'],
-                'fieldsTh'          => $this->getDatesFromFields($fields_db)['fieldsTh'],
-                'fieldsTd'          => $this->getDatesFromFields($fields_db)['fieldsTd'],
-                'inputForm'         => $this->getDatesFromFields($fields_db)['inputForm'],
-                'editForm'          => $this->getDatesFromFields($fields_db)['editForm'],
-                'valueInput'        => $this->getDatesFromFields($fields_db)['valueInput'],
+                'table'           => $table,
+                'primaryKey'      => $this->getPrimaryKey($fields_db),
+                'namespace'       => $namespace,
+                'singularLower'   => singular($table),
+                'singularCaps'    => singular(ucfirst($table)),
+                'nameModel'       => ucfirst($modelName),
+                'nameController'  => ucfirst($controllerName),
+                'allowedFields'   => $this->getDatesFromFields($fields_db)['allowedFields'],
+                'fieldsAdd'       => $this->getDatesFromFields($fields_db)['fieldsAdd'],
+                'fieldsEdit'      => $this->getDatesFromFields($fields_db)['fieldsEdit'],
+                'fieldsData'      => $this->getDatesFromFields($fields_db)['fieldsData'],
+                'fieldsValidate'  => $this->getDatesFromFields($fields_db)['fieldsValidate'],
+                'fieldsValue'     => $this->getDatesFromFields($fields_db)['fieldsValue'],
+                'fieldsTh'        => $this->getDatesFromFields($fields_db)['fieldsTh'],
+                'fieldsTd'        => $this->getDatesFromFields($fields_db)['fieldsTd'],
+                'inputForm'       => $this->getDatesFromFields($fields_db)['inputForm'],
+                'editForm'        => $this->getDatesFromFields($fields_db)['editForm'],
             ];
 
             $this->createFileCrud($this->data);

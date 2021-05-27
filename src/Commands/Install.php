@@ -28,7 +28,7 @@ class Install extends BaseCommand
 			if (CLI::prompt('Run npm install?', ['y', 'n']) == 'y')
 				{
 					CLI::write("Installing dependancies");
-					exec('npm install');
+					exec('npm install && npm run dev');
 				}
 
 			CLI::write("Module have been installed");

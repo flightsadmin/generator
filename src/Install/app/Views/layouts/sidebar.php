@@ -1,57 +1,78 @@
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-  <div class="position-sticky pt-3">
-    <ul class="nav flex-column">
-      <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/">
-          <span class="bi bi-speedometer2"></span>
-          Dashboard
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span class="bi bi-calendar-day"></span>
-          Orders
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span class="bi bi-bag-check"></span>
-          Products
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span class="bi bi-people-fill"></span>
-          Customers
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span class="bi bi-file-earmark-pdf"></span>
-          Reports
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span class="bi bi-gear"></span>
-          Integrations
-        </a>
-      </li>
-    </ul>
-
-    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-      <span>Saved reports</span>
-      <a class="link-secondary" href="#" aria-label="Add a new report">
-        <span class="bi bi-plus-circle"></span>
-      </a>
-    </h6>
-    <ul class="nav flex-column mb-2">
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span data-feather="file-text"></span>
-          Current month
-        </a>
-      </li>
-    </ul>
+<!-- offcanvas sidebar -->
+<div class="offcanvas offcanvas-start sidebar-nav bg-dark" tabindex="-1" id="sidebar">
+  <div class="offcanvas-body p-0">
+    <nav class="navbar-dark">
+      <ul class="navbar-nav">
+        <li>
+          <div class="text-muted small fw-bold text-uppercase px-3">
+            CORE
+          </div>
+        </li>
+        <li>
+          <a href="#" class="nav-link px-3 active">
+            <span class="me-2"><i class="bi bi-speedometer2"></i></span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="my-2"><</li>
+        <li>
+          <div class="text-muted small fw-bold text-uppercase px-3 mb-3">
+            Interface
+          </div>
+        </li>
+        <li>
+          <a
+            class="nav-link px-3 sidebar-link"
+            data-bs-toggle="collapse"
+            href="#layouts"
+          >
+            <span class="me-2"><i class="bi bi-layout-split"></i></span>
+            <span>Layouts</span>
+            <span class="ms-auto">
+              <span class="right-icon">
+                <i class="bi bi-chevron-down"></i>
+              </span>
+            </span>
+          </a>
+          <div class="collapse" id="layouts">
+            <ul class="navbar-nav ps-3">
+              <li>
+                <a href="#" class="nav-link px-3">
+                  <span class="me-2"
+                    ><i class="bi bi-speedometer2"></i
+                  ></span>
+                  <span>Dashboard</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a href="#" class="nav-link px-3">
+            <span class="me-2"><i class="bi bi-file-earmark-pdf"></i></span>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
+        <li>
+          <div class="text-muted small fw-bold text-uppercase px-3 mb-3">
+            Addons
+          </div>
+        </li>
+        <li>
+          <a href="#" class="nav-link px-3">
+            <span class="me-2"><i class="bi bi-graph-up"></i></span>
+            <span>Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link px-3">
+            <span class="me-2"><i class="bi bi-table"></i></span>
+            <span>Tables</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
-</nav>
+</div>
+<!-- offcanvas -->
